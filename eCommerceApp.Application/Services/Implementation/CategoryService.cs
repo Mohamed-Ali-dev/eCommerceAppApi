@@ -1,36 +1,55 @@
-﻿using eCommerceApp.Application.DTOs;
+﻿using AutoMapper;
+using eCommerceApp.Application.DTOs;
 using eCommerceApp.Application.DTOs.Category;
+using eCommerceApp.Application.DTOs.Product;
 using eCommerceApp.Application.Services.Interfaces;
+using eCommerceApp.Domain.Interfaces;
 using eCommerceApp.Domain.Models;
 using System.Linq.Expressions;
 
 namespace eCommerceApp.Application.Services.Implementation
 {
-    internal class CategoryService : ICategoryService
+    internal class CategoryService(IGeneric<Category> categoryInterface, IMapper mapper) : ICategoryService
     {
-        public Task<ServiceResponse> AddAsync(CreateCategoryDto category)
+        public async Task<ServiceResponse> AddAsync(CreateCategoryDto categoryDto)
         {
-            throw new NotImplementedException();
+            var mappedData = mapper.Map<Category>(categoryDto);
+            int result = await categoryInterface.AddAsync(mappedData);
+
+            return result > 0 ? new ServiceResponse(true, "Category added!")
+             : new ServiceResponse(true, "Category failed to be added!");
         }
 
-        public Task<ServiceResponse> DeleteAsync(Guid id)
+        public async Task<ServiceResponse> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            int result = await categoryInterface.DeleteAsync(id);
+            return result > 0 ? new ServiceResponse(true, "Category deleted!")
+                : new ServiceResponse(true, "Category failed to be deleted!");
         }
 
-        public Task<IEnumerable<GetCategoryDto>> GetAllAsync()
+        public async Task<IEnumerable<GetCategoryDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var rowData = await categoryInterface.GetAllAsync();
+            if (!rowData.Any())
+                return [];
+            return mapper.Map<IEnumerable<GetCategoryDto>>(rowData);
         }
 
-        public Task<GetCategoryDto> GetAsync(Expression<Func<Category, bool>> filter)
+        public async Task<GetCategoryDto> GetAsync(Expression<Func<Category, bool>> filter)
         {
-            throw new NotImplementedException();
+            var rowData = await categoryInterface.GetAsync(filter);
+            if (rowData == null)
+                return new GetCategoryDto();
+            return mapper.Map<GetCategoryDto>(rowData);
         }
 
-        public Task<ServiceResponse> UpdateAsync(UpdateCategoryDto category)
+        public async Task<ServiceResponse> UpdateAsync(UpdateCategoryDto categoryDto)
         {
-            throw new NotImplementedException();
+            var mappedData = mapper.Map<Category>(categoryDto);
+            int result = await categoryInterface.UpdateAsync(mappedData);
+
+            return result > 0 ? new ServiceResponse(true, "Category updated!")
+             : new ServiceResponse(true, "Category failed to be updated!");
         }
     }
 }
