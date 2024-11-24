@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using eCommerceApp.Application.DTOs.Category;
+using eCommerceApp.Application.DTOs.Product;
+using eCommerceApp.Domain.Models;
 
 namespace eCommerceApp.Application.Mapping
 {
-    internal class MappingConfig
+    public class MappingConfig :Profile
     {
+        public MappingConfig()
+        {
+            CreateMap<CreateCategoryDto, Category>();
+            CreateMap<CreateProductDto, Product>();
+
+            CreateMap<Category, GetCategoryDto>();
+            CreateMap<Product, GetProductDto>();
+        }
     }
 }
