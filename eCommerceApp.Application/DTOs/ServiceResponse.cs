@@ -6,6 +6,15 @@ using System.Threading.Tasks;
 
 namespace eCommerceApp.Application.DTOs
 {
-    public class ServiceResponse(bool Success = false, string Message = null!);
-    
+    public class ServiceResponse
+    {
+        public ServiceResponse(bool success = false, string message = null!)
+        {
+            Success = success;
+            Message = message;
+        }
+        public bool Success { get; set; } = false;
+        public string Message { get; set; } = null!;
+    }
+
 }

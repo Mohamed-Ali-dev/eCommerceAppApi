@@ -10,7 +10,7 @@ namespace eCommerceApp.Infrastructure.DependencyInjection
 {
     public static class ServiceContainer
     {
-        public static IServiceCollection AddInfrasructureService (this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructureService (this IServiceCollection services, IConfiguration configuration)
         {
             string connectionString = "DefaultConnection";
             services.AddDbContext<AppDbContext>(options =>
