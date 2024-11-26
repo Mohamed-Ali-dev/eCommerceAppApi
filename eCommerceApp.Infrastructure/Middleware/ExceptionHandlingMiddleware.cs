@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using eCommerceApp.Application.Services.Interfaces.Logging;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Microsoft.Extensions.DependencyInjection;
+using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,17 +17,21 @@ namespace eCommerceApp.Infrastructure.Middleware
     {
         public async Task InvokeAsync(HttpContext context)
         {
+            var logger = context.RequestServices.GetRequiredService<IAppLogger<ExceptionHandlingMiddleware>>();
+
             try
             {
                 await _next(context);
             }
             //This block specifically catches database-related exceptions that occur during database update operations.
+
             catch (DbUpdateException ex)
             {
                 context.Response.ContentType = "application/json";
-                if(ex.InnerException is SqlException innnerException )
+                if(ex.InnerException is SqlException innerException )
                 {
-                    switch (innnerException.Number)
+                    logger.LogError(innerException, "Sql Exception");
+                    switch (innerException.Number)
                     {
                         case 2627: //unique constraint violation (e.g., duplicate primary key
                             context.Response.StatusCode = StatusCodes.Status409Conflict;
@@ -43,7 +50,7 @@ namespace eCommerceApp.Infrastructure.Middleware
                             await context.Response.WriteAsync(CreateErrorResponse(context.Response.StatusCode, "An error occurred while the entity changes."));
                             break;
                     }
-                    var errorMessage = innnerException.Number switch
+                    var errorMessage = innerException.Number switch
                     {
                         2627 => "Unique constraint violation",
                         515 => "Cannot insert null",
@@ -54,13 +61,15 @@ namespace eCommerceApp.Infrastructure.Middleware
                 }
                 else
                 {
+                    logger.LogError(ex, "Related EFCore Exception");
                     context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                     await context.Response.WriteAsync(CreateErrorResponse(context.Response.StatusCode, "An error occurred while the entity changes."));
                 }
             }
             catch (Exception ex)
             {
-               context.Response.ContentType = "application/json";
+                logger.LogError(ex, "UnKown Exception");
+                context.Response.ContentType = "application/json";
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 await context.Response.WriteAsync(CreateErrorResponse(context.Response.StatusCode, "An unexpected error occurred."));
             }
