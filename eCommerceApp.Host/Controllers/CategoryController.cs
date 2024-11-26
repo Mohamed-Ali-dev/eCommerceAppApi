@@ -13,6 +13,7 @@ namespace eCommerceApp.Host.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
+            // fix that the product array returned empty
             var data = await categoryService.GetAllAsync();
             return data.Any() ? Ok(data) : NotFound();
         }
@@ -26,12 +27,16 @@ namespace eCommerceApp.Host.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> Add(CreateCategoryDto categoryDto)
         {
+            if(!ModelState.IsValid) 
+                return BadRequest(ModelState);
             var result = await categoryService.AddAsync(categoryDto);
             return result.Success ? Ok(result) : BadRequest(result);
         }
         [HttpPut("update")]
         public async Task<IActionResult> Update(UpdateCategoryDto categoryDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             var result = await categoryService.UpdateAsync(categoryDto);
             return result.Success ? Ok(result) : BadRequest(result);
         }

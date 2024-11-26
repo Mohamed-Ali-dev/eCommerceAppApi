@@ -24,12 +24,17 @@ namespace eCommerceApp.Host.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> Add(CreateProductDto productDto)
         {
+            //check on the categoryId
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             var result = await productService.AddAsync(productDto);
             return result.Success? Ok(result) : BadRequest(result);
         }
         [HttpPut("update")]
         public async Task<IActionResult> Update(UpdateProductDto productDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             var result = await productService.UpdateAsync(productDto);
             return result.Success ? Ok(result) : BadRequest(result);
         }

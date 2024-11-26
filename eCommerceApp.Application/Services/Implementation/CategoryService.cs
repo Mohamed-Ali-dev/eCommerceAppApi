@@ -17,14 +17,14 @@ namespace eCommerceApp.Application.Services.Implementation
             int result = await categoryInterface.AddAsync(mappedData);
 
             return result > 0 ? new ServiceResponse(true, "Category added!")
-             : new ServiceResponse(true, "Category failed to be added!");
+             : new ServiceResponse(false, "Category failed to be added!");
         }
 
         public async Task<ServiceResponse> DeleteAsync(Guid id)
         {
             int result = await categoryInterface.DeleteAsync(id);
             return result > 0 ? new ServiceResponse(true, "Category deleted!")
-                : new ServiceResponse(true, "Category not found or failed delete!");
+                : new ServiceResponse(false, "Category not found or failed delete!");
         }
 
         public async Task<IEnumerable<GetCategoryDto>> GetAllAsync()
@@ -49,7 +49,7 @@ namespace eCommerceApp.Application.Services.Implementation
             int result = await categoryInterface.UpdateAsync(mappedData);
 
             return result > 0 ? new ServiceResponse(true, "Category updated!")
-             : new ServiceResponse(true, "Category failed to be updated!");
+             : new ServiceResponse(false, "Category failed to be updated!");
         }
     }
 }

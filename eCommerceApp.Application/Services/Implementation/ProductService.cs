@@ -16,7 +16,7 @@ namespace eCommerceApp.Application.Services.Implementation
             int result = await productInterface.AddAsync(mappedData);
 
             return result > 0 ? new ServiceResponse(true, "Product added!")
-             : new ServiceResponse(true, "Product failed to be added!");
+             : new ServiceResponse(false, "Product failed to be added!");
         }
 
         public async Task<ServiceResponse> DeleteAsync(Guid id)
@@ -24,7 +24,7 @@ namespace eCommerceApp.Application.Services.Implementation
             int result = await productInterface.DeleteAsync(id);
             
             return result > 0 ? new ServiceResponse(true, "Product deleted!") 
-                : new ServiceResponse(true, "Product not found or failed to be delete!");
+                : new ServiceResponse(false, "Product not found or failed to be delete!");
         }
 
         public async Task<IEnumerable<GetProductDto>> GetAllAsync()
@@ -48,7 +48,7 @@ namespace eCommerceApp.Application.Services.Implementation
             var product = mapper.Map<Product>(productDto);
             var result = await productInterface.UpdateAsync(product);
             return result > 0 ? new ServiceResponse(true, "Product updated!")
-             : new ServiceResponse(true, "Product failed to be updated!");
+             : new ServiceResponse(false, "Product failed to be updated!");
         }
     }
 }

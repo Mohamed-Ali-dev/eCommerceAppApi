@@ -19,7 +19,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseInfrastructureService();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
