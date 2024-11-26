@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace eCommerceApp.Infrastructure.Services
 {
-    internal class SerilogLoggerAdapter<T>(ILogger<T> logger) : IAppLogger<T>
+    public class SerilogLoggerAdapter<T>(ILogger<T> logger) : IAppLogger<T>
     {
         public void LogError(Exception ex, string message) => logger.LogError(ex, message);
         public void LogInformation(string message) => logger.LogInformation(message);
