@@ -1,4 +1,8 @@
 ﻿using eCommerceApp.Domain.Models;
+using eCommerceApp.Domain.Models.Cart;
+using eCommerceApp.Domain.Models.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,9 +12,36 @@ using System.Threading.Tasks;
 
 namespace eCommerceApp.Infrastructure.Data
 {
-    public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
+        public AppDbContext(DbContextOptions options) : base(options)
+        {
+        }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<RefreshToken> refreshTokens { get; set; }
+        public DbSet<PaymentMethod>  PaymentMethods { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<IdentityRole>()
+                .HasData(
+                new IdentityRole
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "User",
+                    NormalizedName = "USER"
+                });
+
+
+        }
     }
+    
 }

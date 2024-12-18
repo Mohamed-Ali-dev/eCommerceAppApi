@@ -1,5 +1,6 @@
 using eCommerceApp.Application.DependencyInjection;
 using eCommerceApp.Infrastructure.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,10 +26,38 @@ builder.Services.AddCors(builder =>
     {
         options.AllowAnyHeader()
         .AllowAnyMethod()
-        .AllowAnyOrigin()
+        .WithOrigins("http://localhost:5228")
         .AllowCredentials();
     });
 });
+builder.Services.AddSwaggerGen(option =>
+{
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+              {
+                  Reference = new OpenApiReference
+                  {
+                      Type = ReferenceType.SecurityScheme,
+                      Id = "Bearer"
+                  },
+                  Name = "Bearer",
+                  In = ParameterLocation.Header,
+              },
+            new List<string>()
+        }
+
+    });
+});   
 
 try
 {
@@ -43,9 +72,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseInfrastructureService();
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
+    app.UseAuthentication();
+    app.UseAuthorization();
 
 app.MapControllers();
  Log.Logger.Information("Application is running .....");

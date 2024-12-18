@@ -1,11 +1,14 @@
 ﻿using eCommerceApp.Application.DTOs.Product;
 using eCommerceApp.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eCommerceApp.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class ProductController(IProductService productService) : ControllerBase
     {
         [HttpGet("all")]

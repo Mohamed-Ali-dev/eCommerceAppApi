@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eCommerceApp.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using eCommerceApp.Infrastructure.Data;
 namespace eCommerceApp.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241216212635_AddUserIdProp")]
+    partial class AddUserIdProp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace eCommerceApp.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1d8af805-07f6-49ec-97f6-1cfc9745f194",
+                            Id = "d60bb100-d973-47e1-902e-68de334cffb7",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "4e381e27-9409-4240-9ffd-f9667376fdaa",
+                            Id = "bed77eea-5e4d-41d6-9d22-37678a41ac1f",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -259,13 +262,15 @@ namespace eCommerceApp.Infrastructure.Migrations
             modelBuilder.Entity("eCommerceApp.Domain.Models.Identity.RefreshToken", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ExpiredOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RevokedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Token")

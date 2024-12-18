@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eCommerceApp.Domain.Services
+namespace eCommerceApp.Infrastructure.Repositories.Cart
 {
-    internal interface IGenericService
+    internal class PaymentMethodRepository
     {
     }
 }

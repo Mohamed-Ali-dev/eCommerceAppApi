@@ -1,6 +1,7 @@
 ﻿using eCommerceApp.Application.DTOs.Category;
 using eCommerceApp.Application.DTOs.Product;
 using eCommerceApp.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace eCommerceApp.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoryController(ICategoryService categoryService) : ControllerBase
     {
         [HttpGet("all")]
