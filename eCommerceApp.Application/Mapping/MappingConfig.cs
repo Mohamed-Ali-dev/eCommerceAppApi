@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using eCommerceApp.Application.DTOs.Cart;
 using eCommerceApp.Application.DTOs.Category;
 using eCommerceApp.Application.DTOs.Identity;
 using eCommerceApp.Application.DTOs.Product;
 using eCommerceApp.Domain.Models;
+using eCommerceApp.Domain.Models.Cart;
 using eCommerceApp.Domain.Models.Identity;
 
 namespace eCommerceApp.Application.Mapping
@@ -22,6 +24,9 @@ namespace eCommerceApp.Application.Mapping
 
             CreateMap<CreateUser, AppUser>();
             CreateMap<LogInUser, AppUser>();
+
+            CreateMap<PaymentMethod, GetPaymentMethod>();
+
         }
     }
 }

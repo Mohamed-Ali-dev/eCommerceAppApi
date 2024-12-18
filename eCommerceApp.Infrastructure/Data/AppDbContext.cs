@@ -40,7 +40,13 @@ namespace eCommerceApp.Infrastructure.Data
                     NormalizedName = "USER"
                 });
 
-
+            builder.Entity<PaymentMethod>()
+                .HasData(
+                new PaymentMethod
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Credit Card"
+                });
         }
     }
     
