@@ -4,12 +4,14 @@ using eCommerceApp.Application.DTOs.Category;
 using eCommerceApp.Application.DTOs.Product;
 using eCommerceApp.Application.Services.Interfaces;
 using eCommerceApp.Domain.Interfaces;
+using eCommerceApp.Domain.Interfaces.CategorySpecifics;
 using eCommerceApp.Domain.Models;
 using System.Linq.Expressions;
 
 namespace eCommerceApp.Application.Services.Implementation
 {
-    internal class CategoryService(IGeneric<Category> categoryInterface, IMapper mapper) : ICategoryService
+    internal class CategoryService(IGeneric<Category> categoryInterface,
+        ICategory categorySpecifics,IMapper mapper) : ICategoryService
     {
         public async Task<ServiceResponse> AddAsync(CreateCategoryDto categoryDto)
         {
@@ -42,7 +44,6 @@ namespace eCommerceApp.Application.Services.Implementation
                 return new GetCategoryDto();
             return mapper.Map<GetCategoryDto>(rowData);
         }
-
         public async Task<ServiceResponse> UpdateAsync(UpdateCategoryDto categoryDto)
         {
             var mappedData = mapper.Map<Category>(categoryDto);
@@ -50,6 +51,15 @@ namespace eCommerceApp.Application.Services.Implementation
 
             return result > 0 ? new ServiceResponse(true, "Category updated!")
              : new ServiceResponse(false, "Category failed to be updated!");
+        }
+
+       public async Task<IEnumerable<GetProductDto>> GetProductsByCategory(Guid categoryId)
+        {
+            var productsByCategory = await categorySpecifics.GetProductsByCategory(categoryId);
+            if (!productsByCategory.Any())
+                return [];
+
+            return mapper.Map<IEnumerable<GetProductDto>>(productsByCategory);
         }
     }
 }

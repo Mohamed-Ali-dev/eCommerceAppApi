@@ -1,5 +1,6 @@
 ﻿using eCommerceApp.Application.DTOs;
 using eCommerceApp.Application.DTOs.Category;
+using eCommerceApp.Application.DTOs.Product;
 using eCommerceApp.Domain.Models;
 using System.Linq.Expressions;
 
@@ -12,5 +13,6 @@ namespace eCommerceApp.Application.Services.Interfaces
         Task<ServiceResponse> AddAsync(CreateCategoryDto category);
         Task<ServiceResponse> UpdateAsync(UpdateCategoryDto category);
         Task<ServiceResponse> DeleteAsync(Guid id);
+        Task<IEnumerable<GetProductDto>> GetProductsByCategory(Guid categoryId);
     }
 }
