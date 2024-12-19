@@ -21,6 +21,7 @@ namespace eCommerceApp.Infrastructure.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<RefreshToken> refreshTokens { get; set; }
         public DbSet<PaymentMethod>  PaymentMethods { get; set; }
+        public DbSet<Archive>  CheckoutArchives { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

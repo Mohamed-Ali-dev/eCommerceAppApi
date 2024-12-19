@@ -18,7 +18,7 @@ namespace eCommerceApp.Domain.Models
         public decimal  Price { get; set; }
         public string? Image { get; set; }
         public int  Quantity { get; set; }
-        public Category? Categoory { get; set; }
+        public Category? Category { get; set; }
         public Guid CategoryId { get; set; }
 
     }
