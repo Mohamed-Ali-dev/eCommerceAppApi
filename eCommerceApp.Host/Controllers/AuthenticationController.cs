@@ -28,7 +28,7 @@ namespace eCommerceApp.Host.Controllers
 
             return result.Success ? Ok(result) : BadRequest(result);
         }
-        [HttpGet("refreshToken/{refreshToken}")]
+        [HttpGet("refreshToken")]
         public async Task<IActionResult> ReviveToken()
         {
             var refreshToken = Request.Cookies["refreshToken"];

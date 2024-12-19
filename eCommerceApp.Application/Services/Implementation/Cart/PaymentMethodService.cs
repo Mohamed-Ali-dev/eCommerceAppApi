@@ -12,13 +12,13 @@ namespace eCommerceApp.Application.Services.Implementation.Cart
 {
     internal class PaymentMethodService(IPaymentMethod paymentMethod, IMapper mapper) : IPaymentMethodService
     {
-        public async Task<IEnumerable<GetPaymentMethod>> GetPaymentMethods()
+        public async Task<IEnumerable<GetPaymentMethodDto>> GetPaymentMethods()
         {
             var methods = await paymentMethod.GetPaymentMethods();
             if (!methods.Any())
                 return [];
 
-            return mapper.Map<IEnumerable<GetPaymentMethod>>(methods);
+            return mapper.Map<IEnumerable<GetPaymentMethodDto>>(methods);
         }
     }
 }

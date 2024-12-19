@@ -1,4 +1,5 @@
-﻿using eCommerceApp.Application.Services.Interfaces.Logging;
+﻿using eCommerceApp.Application.Services.Interfaces.Cart;
+using eCommerceApp.Application.Services.Interfaces.Logging;
 using eCommerceApp.Domain.Interfaces;
 using eCommerceApp.Domain.Interfaces.Authentication;
 using eCommerceApp.Domain.Interfaces.Cart;
@@ -46,6 +47,9 @@ namespace eCommerceApp.Infrastructure.DependencyInjection
             services.AddScoped<ITokenManagement, TokenManagement>();
             services.AddScoped<IRoleManagement, RoleManagement>();
             services.AddScoped<IPaymentMethod, PaymentMethodRepository>();
+            services.AddScoped<IPaymentService, StripePaymentService>();
+
+            Stripe.StripeConfiguration.ApiKey = configuration["Stripe:SecretKey"];
             //configure the JwtOptions
             services.Configure<JwtOptions>(configuration.GetSection("JWT"));
 

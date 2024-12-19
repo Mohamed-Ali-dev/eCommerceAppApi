@@ -14,40 +14,52 @@ namespace eCommerceApp.Infrastructure.Services
     public class StripePaymentService : IPaymentService
     {
         public async Task<ServiceResponse> Pay(decimal totalAmount,
-            IEnumerable<Product> cartProducts, IEnumerable<ProcessCart> carts)
+            IEnumerable<Product> cartProducts, IEnumerable<ProcessCartDto> carts, string? domain)
         {
-            var lineItems = new List<SessionLineItemOptions>();
-
-            foreach (var product in cartProducts)
+            try
             {
-                var cart = carts.FirstOrDefault(c => c.ProductId == product.Id);
 
-                lineItems.Add(new SessionLineItemOptions
-                {
-                    PriceData = new SessionLineItemPriceDataOptions
-                    {
-                        Currency = "usd",
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
-                        {
-                            Name = product.Name,
-                            Description = product.Description
-                        },
-                        UnitAmount = (long)(product.Price * 100),
-                    },
-                    Quantity = cart.Quantity,
-                });
+            
+               var lineItems = new List<SessionLineItemOptions>();
+              
+               foreach (var product in cartProducts)
+               {
+                   var cart = carts.FirstOrDefault(c => c.ProductId == product.Id);
+              
+                   lineItems.Add(new SessionLineItemOptions
+                   {
+                       PriceData = new SessionLineItemPriceDataOptions
+                       {
+                           Currency = "usd",
+                           ProductData = new SessionLineItemPriceDataProductDataOptions
+                           {
+                               Name = product.Name,
+                               Description = product.Description
+                           },
+                           UnitAmount = (long)(product.Price * 100),
+                       },
+                       Quantity = cart.Quantity,
+                   });
+               }
+                //var domain = Request.Scheme + "://" + Request.Host.Value + "/";
+
+                var options = new SessionCreateOptions
+               {
+                   PaymentMethodTypes = ["usd"],
+                   LineItems = lineItems,
+                   Mode = "payment",
+                   SuccessUrl = domain + $"payment-success",
+                   CancelUrl = domain + $"payment-cancel"
+               };
+               var service = new SessionService();
+               Session session = await service.CreateAsync(options);
+               return new ServiceResponse(true, session.Url);
+
             }
-            var options = new SessionCreateOptions
+            catch(Exception ex) 
             {
-                PaymentMethodTypes = ["usd"],
-                LineItems = lineItems,
-                Mode = "payment",
-                SuccessUrl = "",
-                CancelUrl = ""
-            };
-            var service = new SessionService();
-            Session session = await service.CreateAsync(options);
-            return new ServiceResponse(true, session.Url);
+                return new ServiceResponse(false, ex.Message);
+            }
         }
     }
 }

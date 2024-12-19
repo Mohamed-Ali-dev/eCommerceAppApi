@@ -12,14 +12,11 @@ using System.Threading.Tasks;
 
 namespace eCommerceApp.Infrastructure.Data
 {
-    public class AppDbContext : IdentityDbContext<AppUser>
+    public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser>(options)
     {
-        public AppDbContext(DbContextOptions options) : base(options)
-        {
-        }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<RefreshToken> refreshTokens { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<PaymentMethod>  PaymentMethods { get; set; }
         public DbSet<Archive>  CheckoutArchives { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)

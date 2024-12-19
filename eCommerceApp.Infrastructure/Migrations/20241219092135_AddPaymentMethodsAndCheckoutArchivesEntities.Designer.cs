@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eCommerceApp.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using eCommerceApp.Infrastructure.Data;
 namespace eCommerceApp.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241219092135_AddPaymentMethodsAndCheckoutArchivesEntities")]
+    partial class AddPaymentMethodsAndCheckoutArchivesEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace eCommerceApp.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7651f9d0-1f9e-4f6b-9025-4bb82963cd4c",
+                            Id = "a119317e-e07b-4f5e-84ec-4cbacc45065f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "8934405d-ac0f-4039-bbdd-b1c4df871a8d",
+                            Id = "f6d1542d-d908-436c-9cee-4f4714e0e0ae",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -213,7 +216,7 @@ namespace eCommerceApp.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d40e694e-2895-4ce6-9b79-6318ce42f871"),
+                            Id = new Guid("b1c2adc7-04fc-43bb-a4b1-4eb08547d462"),
                             Name = "Credit Card"
                         });
                 });
@@ -323,7 +326,7 @@ namespace eCommerceApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("refreshTokens");
                 });
 
             modelBuilder.Entity("eCommerceApp.Domain.Models.Product", b =>

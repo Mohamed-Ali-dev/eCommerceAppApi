@@ -25,7 +25,8 @@ namespace eCommerceApp.Application.Mapping
             CreateMap<CreateUser, AppUser>();
             CreateMap<LogInUser, AppUser>();
 
-            CreateMap<PaymentMethod, GetPaymentMethod>();
+            CreateMap<PaymentMethod, GetPaymentMethodDto>();
+            CreateMap<CreateArchiveDto, Archive>();
 
         }
     }

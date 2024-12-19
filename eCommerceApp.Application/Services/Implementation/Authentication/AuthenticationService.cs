@@ -84,7 +84,7 @@ namespace eCommerceApp.Application.Services.Implementation.Authentication
             string jwtToken = tokenManagement.GenerateToken(claims);
             var refreshToken = tokenManagement.GetRefreshToken();
 
-            int saveTokenResult = 0;
+            int saveTokenResult;
             bool userTokenCheck = await tokenManagement.ValidateRefreshToken(inputRefreshToken);
             if (userTokenCheck)
             {

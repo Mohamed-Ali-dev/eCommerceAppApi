@@ -47,7 +47,7 @@ namespace eCommerceApp.Infrastructure.Repositories.Authentication
         }
 
         public async Task<string> GetUserIdByRefreshToken(string refreshToken) =>
-             (await context.refreshTokens.FirstOrDefaultAsync(x => x.Token == refreshToken))!.UserId;
+             (await context.RefreshTokens.FirstOrDefaultAsync(x => x.Token == refreshToken))!.UserId;
         public string GenerateToken(List<Claim> claims)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Value.SigningKey));
@@ -71,13 +71,13 @@ namespace eCommerceApp.Infrastructure.Repositories.Authentication
                 CreatedOn = refreshToken.CreatedOn,
                 ExpiredOn = refreshToken.ExpiredOn,
             };
-            context.refreshTokens.Add(newRefreshToken);
+            context.RefreshTokens.Add(newRefreshToken);
             return await context.SaveChangesAsync();
         }
         public async Task<int> UpdateRefreshToken(string userId, string newRefreshToken)
         {
             // Find the refresh token associated with the given userId
-            var refreshTokenEntity = await context.refreshTokens
+            var refreshTokenEntity = await context.RefreshTokens
                 .FirstOrDefaultAsync(rt => rt.UserId == userId);
 
             // Check if the entity exists
@@ -95,7 +95,7 @@ namespace eCommerceApp.Infrastructure.Repositories.Authentication
 
         public async Task<bool> ValidateRefreshToken(string refreshToken)
         {
-            var refreshTokenDb = await context.refreshTokens.FirstOrDefaultAsync(x =>x.Token == refreshToken);
+            var refreshTokenDb = await context.RefreshTokens.FirstOrDefaultAsync(x =>x.Token == refreshToken);
             if(refreshTokenDb != null && refreshTokenDb.IsActive)
             {
                 return true;

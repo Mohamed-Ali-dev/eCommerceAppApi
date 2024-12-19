@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eCommerceApp.Domain.Models.Cart
+namespace eCommerceApp.Application.DTOs.Cart
 {
-    public class Archive
+    public class CreateArchiveDto
     {
-        [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        [Required]
         public Guid ProductId { get; set; }
+        [Required]
         public int Quantity { get; set; }
+        [Required]
         public Guid UserId { get; set; }
-        public DateTime CreatedData { get; set; } = DateTime.Now;
     }
 }

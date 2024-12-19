@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace eCommerceApp.Application.DTOs.Cart
 {
-    public class GetPaymentMethod
+    public class GetPaymentMethodDto
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
