@@ -45,7 +45,7 @@ namespace eCommerceApp.Infrastructure.Services
 
                 var options = new SessionCreateOptions
                {
-                   PaymentMethodTypes = ["usd"],
+                   PaymentMethodTypes = ["card"],
                    LineItems = lineItems,
                    Mode = "payment",
                    SuccessUrl = domain + $"payment-success",

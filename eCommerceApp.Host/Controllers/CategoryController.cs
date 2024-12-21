@@ -27,6 +27,8 @@ namespace eCommerceApp.Host.Controllers
             return data != null ? Ok(data) : NotFound(data);
         }
         [HttpPost("add")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Add(CreateCategoryDto categoryDto)
         {
             if(!ModelState.IsValid) 
@@ -35,6 +37,8 @@ namespace eCommerceApp.Host.Controllers
             return result.Success ? Ok(result) : BadRequest(result);
         }
         [HttpPut("update")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Update(UpdateCategoryDto categoryDto)
         {
             if (!ModelState.IsValid)
@@ -43,6 +47,8 @@ namespace eCommerceApp.Host.Controllers
             return result.Success ? Ok(result) : BadRequest(result);
         }
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await categoryService.DeleteAsync(id);

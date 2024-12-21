@@ -1,8 +1,10 @@
 ﻿using eCommerceApp.Application.Mapping;
 using eCommerceApp.Application.Services.Implementation;
 using eCommerceApp.Application.Services.Implementation.Authentication;
+using eCommerceApp.Application.Services.Implementation.Cart;
 using eCommerceApp.Application.Services.Interfaces;
 using eCommerceApp.Application.Services.Interfaces.Authentication;
+using eCommerceApp.Application.Services.Interfaces.Cart;
 using eCommerceApp.Application.Validations;
 using eCommerceApp.Application.Validations.Authentication;
 using FluentValidation;
@@ -18,6 +20,8 @@ namespace eCommerceApp.Application.DependencyInjection
             services.AddAutoMapper(typeof(MappingConfig));
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IPaymentMethodService, PaymentMethodService>();
 
             services.AddFluentValidationAutoValidation();
             //add all the validation classes in the assembly
