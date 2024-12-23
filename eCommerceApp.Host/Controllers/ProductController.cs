@@ -7,7 +7,7 @@ namespace eCommerceApp.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
 
     public class ProductController(IProductService productService) : ControllerBase
     {
@@ -25,9 +25,9 @@ namespace eCommerceApp.Host.Controllers
             return data != null ? Ok(data) : NotFound(data);
         }
         [HttpPost("add")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
 
-        public async Task<IActionResult> Add(CreateProductDto productDto)
+        public async Task<IActionResult> Add([FromForm] CreateProductDto productDto)
         {
             //check on the categoryId
             if (!ModelState.IsValid)
@@ -36,17 +36,18 @@ namespace eCommerceApp.Host.Controllers
             return result.Success? Ok(result) : BadRequest(result);
         }
         [HttpPut("update")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
 
-        public async Task<IActionResult> Update(UpdateProductDto productDto)
+        public async Task<IActionResult> Update([FromForm] UpdateProductDto productDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var result = await productService.UpdateAsync(productDto);
+
             return result.Success ? Ok(result) : BadRequest(result);
         }
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Delete(Guid id)
         {

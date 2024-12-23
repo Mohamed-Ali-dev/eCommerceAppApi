@@ -37,12 +37,12 @@ namespace eCommerceApp.Application.Services.Implementation
             return mapper.Map<IEnumerable<GetCategoryDto>>(rowData);
         }
 
-        public async Task<GetCategoryDto> GetAsync(Expression<Func<Category, bool>> filter)
+        public async Task<GetCategoryDto> GetAsync(Expression<Func<Category, bool>> filter, bool tracking = false)
         {
-            var rowData = await categoryInterface.GetAsync(filter);
-            if (rowData == null)
-                return new GetCategoryDto();
-            return mapper.Map<GetCategoryDto>(rowData);
+            var category = await categoryInterface.GetAsync(filter, tracking);
+            if (category == null)
+                return null;
+            return mapper.Map<GetCategoryDto>(category);
         }
         public async Task<ServiceResponse> UpdateAsync(UpdateCategoryDto categoryDto)
         {

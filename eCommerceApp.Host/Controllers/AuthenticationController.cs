@@ -9,7 +9,7 @@ namespace eCommerceApp.Host.Controllers
     [ApiController]
     public class AuthenticationController(IAuthenticationService authenticationService) : ControllerBase
     {
-        [HttpPost("create")]
+        [HttpPost("register")]
         public async Task<IActionResult> CreateUser(CreateUser user)
         {
             var result = await authenticationService.CreateUser(user);

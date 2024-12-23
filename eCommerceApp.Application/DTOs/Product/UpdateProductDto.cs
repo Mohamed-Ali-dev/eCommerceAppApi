@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace eCommerceApp.Application.DTOs.Product
 {
@@ -6,5 +7,7 @@ namespace eCommerceApp.Application.DTOs.Product
     {
         [Required]
         public Guid Id { get; set; }
+        public IFormFile? Image { get; set; }
+
     }
 }

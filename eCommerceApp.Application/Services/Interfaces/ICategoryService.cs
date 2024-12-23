@@ -9,7 +9,7 @@ namespace eCommerceApp.Application.Services.Interfaces
     public interface ICategoryService
     {
         Task<IEnumerable<GetCategoryDto>> GetAllAsync();
-        Task<GetCategoryDto> GetAsync(Expression<Func<Category, bool>> filter);
+        Task<GetCategoryDto> GetAsync(Expression<Func<Category, bool>> filter, bool tracking = false);
         Task<ServiceResponse> AddAsync(CreateCategoryDto category);
         Task<ServiceResponse> UpdateAsync(UpdateCategoryDto category);
         Task<ServiceResponse> DeleteAsync(Guid id);

@@ -9,7 +9,7 @@ namespace eCommerceApp.Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class CategoryController(ICategoryService categoryService) : ControllerBase
     {
         [HttpGet("all")]
@@ -24,10 +24,10 @@ namespace eCommerceApp.Host.Controllers
         public async Task<IActionResult> Get(Guid id)
         {
             var data = await categoryService.GetAsync(u => u.Id == id);
-            return data != null ? Ok(data) : NotFound(data);
+            return data != null ? Ok(data) : NotFound();
         }
         [HttpPost("add")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Add(CreateCategoryDto categoryDto)
         {
@@ -37,7 +37,7 @@ namespace eCommerceApp.Host.Controllers
             return result.Success ? Ok(result) : BadRequest(result);
         }
         [HttpPut("update")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Update(UpdateCategoryDto categoryDto)
         {
@@ -47,7 +47,7 @@ namespace eCommerceApp.Host.Controllers
             return result.Success ? Ok(result) : BadRequest(result);
         }
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Delete(Guid id)
         {

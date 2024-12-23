@@ -53,7 +53,10 @@ namespace eCommerceApp.Application.Services.Implementation.Authentication
             var claims = await userManagement.GetUserClaims(_user!.Email!);
             string jwtToken = tokenManagement.GenerateToken(claims);
             var refreshToken = tokenManagement.GetRefreshToken();
-            return new AuthResponse {
+            var saveTokenResult = await tokenManagement.AddRefreshToken(_user.Id, refreshToken);
+            return saveTokenResult <= 0 ?
+               new AuthResponse { Message = "Internal error occurred while authenticating" } :
+            new AuthResponse {
                 Success = true,
                 Message = "Account created!",
                 Roles = roles ,

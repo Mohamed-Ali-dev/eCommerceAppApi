@@ -14,10 +14,13 @@ namespace eCommerceApp.Application.Mapping
         public MappingConfig()
         {
             CreateMap<CreateCategoryDto, Category>();
-            CreateMap<CreateProductDto, Product>();
+            CreateMap<CreateProductDto, Product>()
+                .ForMember(p =>p.Image, opt => opt.Ignore());
 
             CreateMap<UpdateCategoryDto, Category>();
-            CreateMap<UpdateProductDto, Product>();
+            CreateMap<UpdateProductDto, Product>()
+                .ForMember(p => p.Image, opt => opt.Ignore());
+
 
             CreateMap<Category, GetCategoryDto>();
             CreateMap<Product, GetProductDto>();

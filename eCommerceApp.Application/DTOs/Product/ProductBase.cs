@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace eCommerceApp.Application.DTOs.Product
 {
@@ -11,8 +12,6 @@ namespace eCommerceApp.Application.DTOs.Product
         [Required]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
-        [Required]
-        public string? Image { get; set; }
         [Required]
         public int Quantity { get; set; }
         [Required]

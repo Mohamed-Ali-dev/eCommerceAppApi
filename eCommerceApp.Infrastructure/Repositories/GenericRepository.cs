@@ -11,10 +11,14 @@ namespace eCommerceApp.Infrastructure.Repositories
         {
             return await context.Set<TEntity>().AsNoTracking().ToListAsync();
         }
-        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter)
+        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool tracking = false)
         {
-            var result = await context.Set<TEntity>().FirstOrDefaultAsync(filter);
-            return result;
+            var result =  context.Set<TEntity>().Where(filter);
+            if (!tracking)
+            {
+                result.AsNoTracking();
+            }
+            return await result.FirstOrDefaultAsync();
         }
         public async Task<int> AddAsync(TEntity entity)
         {
