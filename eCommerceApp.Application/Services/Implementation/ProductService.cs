@@ -25,22 +25,34 @@ namespace eCommerceApp.Application.Services.Implementation
                 {
                     product.Image = baseUrl + product.Image;
                 }
+                product.Category = (await categoryInterface.GetAsync(c => c.Id == product.CategoryId)).Name;
+
             }
 
             return getProducts;
         }
         public async Task<GetProductDto> GetAsync(Expression<Func<Product, bool>> filter, bool tracking = false)
         {
-            var product = await productInterface.GetAsync(filter,tracking);
-            if (product == null)
+            var productFromDb = await productInterface.GetAsync(filter,tracking);
+            if (productFromDb == null)
                 return new GetProductDto();
-            return mapper.Map<GetProductDto>(product);
+            var product =  mapper.Map<GetProductDto>(productFromDb);
+            product.Category = (await categoryInterface.GetAsync(c => c.Id == product.CategoryId)).Name;
+
+            var baseUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}/";
+
+            if (!string.IsNullOrEmpty(product.Image))
+            {
+                product.Image = baseUrl + product.Image;
+            }
+            return product;
         }
         public async Task<ServiceResponse> AddAsync(CreateProductDto productDto)
         {
-            var category = categoryInterface.GetAsync(c => c.Id == productDto.CategoryId);
+            var category = await categoryInterface.GetAsync(c => c.Id == productDto.CategoryId);
             if (category == null)
                 return new ServiceResponse(false, "Category not found");
+            
             if (productDto.Image == null)
                 return new ServiceResponse(false, "No file uploaded");
 
@@ -67,10 +79,14 @@ namespace eCommerceApp.Application.Services.Implementation
         }
         public async Task<ServiceResponse> UpdateAsync(UpdateProductDto productDto)
         {
-            var category = categoryInterface.GetAsync(c => c.Id == productDto.CategoryId);
+            var category = await categoryInterface.GetAsync(c => c.Id == productDto.CategoryId);
             if (category == null)
                 return new ServiceResponse(false, "Category not found");
-            string imagePath = "";
+            var productFromDb = await productInterface.GetAsync(u => u.Id == productDto.Id, true);
+
+            var product = mapper.Map<Product>(productDto);
+
+            //string imagePath = "";
             if (productDto.Image != null)
             {
                 //return new ServiceResponse(false, "No file uploaded");
@@ -85,7 +101,6 @@ namespace eCommerceApp.Application.Services.Implementation
                     return new ServiceResponse(false, "Invalid image format. Allowed: JPG, JPEG, PNG, GIF.");
                 }
 
-                var productFromDb = await productInterface.GetAsync(u => u.Id == productDto.Id);
 
                 if (productFromDb == null)
                     return new ServiceResponse(false, "Product not found");
@@ -98,22 +113,20 @@ namespace eCommerceApp.Application.Services.Implementation
                         File.Delete(oldImagePath);
                     }
                 }
-                 imagePath = await SaveImage(productDto.Image);
-
-            }
-
-
-
-            var product = mapper.Map<Product>(productDto);
-            if (productDto.Image != null || productDto.Image.Length != 0)
-            {
+                var imagePath = await SaveImage(productDto.Image);
                 product.Image = imagePath;
+
             }
-
-
-            var result = await productInterface.UpdateAsync(product);
-            return result > 0 ? new ServiceResponse(true, "Product updated!")
-             : new ServiceResponse(false, "Product failed to be updated!");
+                product.Image = productFromDb.Image;
+            productFromDb.CategoryId = product.CategoryId;
+            productFromDb.Price = product.Price;
+            productFromDb.Quantity = product.Quantity;
+            productFromDb.Description = product.Description;
+            productFromDb.Image = product.Image;
+            productFromDb.Name = product.Name;
+            var result = await productInterface.UpdateAsync(productFromDb);
+            return result > 0 ? new ServiceResponse(true, "Product updated!"):
+                new ServiceResponse(false, "Product failed to be updated!");
         }
         public async Task<ServiceResponse> DeleteAsync(Guid id)
         {
@@ -155,6 +168,6 @@ namespace eCommerceApp.Application.Services.Implementation
             var imagePath = Path.Combine("product-images", uniqueFileName).Replace("\\", "/");
             return imagePath;
         } 
-  
+    
     }
 }

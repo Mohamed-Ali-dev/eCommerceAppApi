@@ -23,7 +23,8 @@ namespace eCommerceApp.Application.Mapping
 
 
             CreateMap<Category, GetCategoryDto>();
-            CreateMap<Product, GetProductDto>();
+            CreateMap<Product, GetProductDto>()
+                .ForMember(p =>p.Image, opt =>opt.Ignore());
 
             CreateMap<CreateUser, AppUser>();
             CreateMap<LogInUser, AppUser>();
